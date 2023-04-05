@@ -1,0 +1,43 @@
+http:
+  routers:
+    router1:
+      rule: "PathPrefix(`/`)"
+      entryPoints:
+        - http
+      service: service1
+    router2:
+      rule: "PathPrefix(`/`)"
+      entryPoints:
+        - https
+      service: service2
+      tls:
+        options: default
+  services:
+    service1:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:8080/"
+    service2:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:8080/"
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /home/scott/conf/certs/tls.crt
+        keyFile: /home/scott/conf/certs/tls.key
+  certificates:
+    - certFile: /home/scott/conf/certs/tls.crt
+      keyFile: /home/scott/conf/certs/tls.key
+      stores:
+        - default
+  options:
+    default:
+      sniStrict: true
+      minVersion: VersionTLS12
+      # clientAuth:
+      #   caFiles:
+      #     - hoge.pem
+      #   clientAuthType: RequireAndVerifyClientCert
+

@@ -1,0 +1,41 @@
+################################################################
+#
+# Configuration sample for Traefik v2.
+#
+# For Traefik v1: https://github.com/traefik/traefik/blob/v1.7/traefik.sample.toml
+#
+################################################################
+
+################################################################
+# Global configuration
+################################################################
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+################################################################
+# EntryPoints configuration
+################################################################
+
+# EntryPoints definition
+#
+# Optional
+#
+entryPoints:
+  http:
+    address: 0.0.0.0:10080
+  https:
+    address: 0.0.0.0:10443
+
+providers:
+  file:
+    filename: "traefik_dynamic.yml"
+    watch: true
+
+log:
+  # level: DEBUG
+  level: ERROR
+
+serversTransport:
+  insecureSkipVerify: true
+
