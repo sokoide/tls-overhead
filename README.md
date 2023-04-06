@@ -9,13 +9,18 @@
 package main
 
 import (
+        "flag"
         "fmt"
         "math/rand"
         "net/http"
 )
 
-// var s string = "hello"
-var s string = makeRandomString(4096)
+type Options struct {
+        length int
+}
+
+var options Options
+var s string
 
 func makeRandomString(length int) string {
         src := []byte("abcdefghijklmnopqrstuvwxyz")
@@ -27,6 +32,11 @@ func makeRandomString(length int) string {
 }
 
 func main() {
+        flag.IntVar(&options.length, "length", 4*1024, "return string len")
+        flag.Parse()
+
+        s = makeRandomString(options.length)
+
         http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
                 fmt.Fprintf(w, s)
         })
@@ -62,8 +72,8 @@ func main() {
 | Traefik       | Disabled | 25,790/s |
 | Nginx         | 1way     | 22,792/s |
 | Traefik       | 1way     | 21,188/s |
-| Nginx         | mTLS     | TBD      |
-| Traefik       | mTLS     | TBD      |
+| Nginx         | mTLS     | 22,011/s |
+| Traefik       | mTLS     | 20,893/s |
 
 * Requests/s for 4K ramdom string
 
@@ -74,20 +84,20 @@ func main() {
 | Traefik       | Disabled | 19,630/s |
 | Nginx         | 1way     | 18,764/s |
 | Traefik       | 1way     | 16,239/s |
-| Nginx         | mTLS     | TBD      |
-| Traefik       | mTLS     | TBD      |
+| Nginx         | mTLS     | 18,674/s |
+| Traefik       | mTLS     | 15,918/s |
 
 * Requests/s for 256K ramdom string
 
 | Item          | TLS      | Reqs/s   |
 | ------------- | -------- | -------- |
-| Direct Access | Disabled | 3,626/s |
-| Nginx         | Disabled | 3,294/s |
-| Traefik       | Disabled | 3,295/s |
-| Nginx         | 1way     | 2,923/s |
-| Traefik       | 1way     | 2,710/s |
-| Nginx         | mTLS     | TBD      |
-| Traefik       | mTLS     | TBD      |
+| Direct Access | Disabled | 3,626/s  |
+| Nginx         | Disabled | 3,294/s  |
+| Traefik       | Disabled | 3,295/s  |
+| Nginx         | 1way     | 2,923/s  |
+| Traefik       | 1way     | 2,710/s  |
+| Nginx         | mTLS     | 2,976/s  |
+| Traefik       | mTLS     | 2,684/s  |
 
 
 ## Result Detail
