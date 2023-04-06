@@ -10,12 +10,25 @@ package main
 
 import (
         "fmt"
+        "math/rand"
         "net/http"
 )
 
+// var s string = "hello"
+var s string = makeRandomString(4096)
+
+func makeRandomString(length int) string {
+        src := []byte("abcdefghijklmnopqrstuvwxyz")
+        result := make([]byte, length)
+        for i := range result {
+                result[i] = src[rand.Intn(len(src))]
+        }
+        return string(result)
+}
+
 func main() {
         http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-                fmt.Fprintf(w, "hello")
+                fmt.Fprintf(w, s)
         })
         http.ListenAndServe(":8080", nil)
 }
@@ -40,7 +53,7 @@ func main() {
 
 ## Result Summary
 
-* Requests/s
+* Requests/s for "hello"
 
 | Item          | TLS      | Reqs/s   |
 | ------------- | -------- | -------- |
@@ -52,9 +65,33 @@ func main() {
 | Nginx         | mTLS     | TBD      |
 | Traefik       | mTLS     | TBD      |
 
+* Requests/s for 4K ramdom string
+
+| Item          | TLS      | Reqs/s   |
+| ------------- | -------- | -------- |
+| Direct Access | Disabled | 21,984/s |
+| Nginx         | Disabled | 19,918/s |
+| Traefik       | Disabled | 19,630/s |
+| Nginx         | 1way     | 18,764/s |
+| Traefik       | 1way     | 16,239/s |
+| Nginx         | mTLS     | TBD      |
+| Traefik       | mTLS     | TBD      |
+
+* Requests/s for 256K ramdom string
+
+| Item          | TLS      | Reqs/s   |
+| ------------- | -------- | -------- |
+| Direct Access | Disabled | 3,626/s |
+| Nginx         | Disabled | 3,294/s |
+| Traefik       | Disabled | 3,295/s |
+| Nginx         | 1way     | 2,923/s |
+| Traefik       | 1way     | 2,710/s |
+| Nginx         | mTLS     | TBD      |
+| Traefik       | mTLS     | TBD      |
 
 
 ## Result Detail
 
-* [result.md](result.md)
+* "hello" case [result.md](result.md)
+* 4K/256K cases not attached
 
