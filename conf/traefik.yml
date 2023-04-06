@@ -26,14 +26,16 @@ entryPoints:
     address: 0.0.0.0:10080
   https:
     address: 0.0.0.0:10443
+  mtls:
+    address: 0.0.0.0:10444
 
 providers:
   file:
-    filename: "traefik_dynamic.yml"
+    filename: "/home/scott/conf/traefik/dynamic/traefik_dynamic.yml"
     watch: true
 
 log:
-  # level: DEBUG
+  #level: DEBUG
   level: ERROR
 
 serversTransport:

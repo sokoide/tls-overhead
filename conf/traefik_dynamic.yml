@@ -6,12 +6,19 @@ http:
         - http
       service: service1
     router2:
-      rule: "PathPrefix(`/`)"
+      rule: "Host(`lab2`) && PathPrefix(`/`)"
       entryPoints:
         - https
       service: service2
       tls:
         options: default
+    router3:
+      rule: "Host(`lab2`) && PathPrefix(`/`)"
+      entryPoints:
+        - mtls
+      service: service3
+      tls:
+        options: mtlsopt
   services:
     service1:
       loadBalancer:
@@ -21,23 +28,31 @@ http:
       loadBalancer:
         servers:
           - url: "http://localhost:8080/"
+    service3:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:8080/"
 tls:
   stores:
-    default:
-      defaultCertificate:
-        certFile: /home/scott/conf/certs/tls.crt
-        keyFile: /home/scott/conf/certs/tls.key
+    default: {}
   certificates:
     - certFile: /home/scott/conf/certs/tls.crt
       keyFile: /home/scott/conf/certs/tls.key
       stores:
         - default
+
   options:
     default:
       sniStrict: true
       minVersion: VersionTLS12
-      # clientAuth:
-      #   caFiles:
-      #     - hoge.pem
-      #   clientAuthType: RequireAndVerifyClientCert
-
+      clientAuth:
+        caFiles:
+          - /home/scott/conf/certs/ca.crt
+        clientAuthType: NoClientCert
+    mtlsopt:
+      sniStrict: true
+      minVersion: VersionTLS12
+      clientAuth:
+        caFiles:
+          - /home/scott/conf/certs/ca.crt
+        clientAuthType: RequireAndVerifyClientCert

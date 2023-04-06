@@ -73,7 +73,7 @@ func main() {
 | Nginx         | 1way     | 22,792/s |
 | Traefik       | 1way     | 21,188/s |
 | Nginx         | mTLS     | 22,011/s |
-| Traefik       | mTLS     | 20,893/s |
+| Traefik       | mTLS     | 21,173/s |
 
 * Requests/s for 4K ramdom string
 
@@ -85,7 +85,7 @@ func main() {
 | Nginx         | 1way     | 18,764/s |
 | Traefik       | 1way     | 16,239/s |
 | Nginx         | mTLS     | 18,674/s |
-| Traefik       | mTLS     | 15,918/s |
+| Traefik       | mTLS     | 16,110/s |
 
 * Requests/s for 256K ramdom string
 
@@ -97,7 +97,7 @@ func main() {
 | Nginx         | 1way     | 2,923/s  |
 | Traefik       | 1way     | 2,710/s  |
 | Nginx         | mTLS     | 2,976/s  |
-| Traefik       | mTLS     | 2,684/s  |
+| Traefik       | mTLS     | 2,789/s  |
 
 
 ## Result Detail
